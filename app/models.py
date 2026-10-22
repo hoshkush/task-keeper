@@ -31,6 +31,6 @@ class Task(Base):
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
     )
 
-    # selectin 로딩. 할 일 여러 개를 조회하면 태그를 IN 쿼리 한 번으로 함께 가져옵니다.
-    # 기본값(select)이면 task마다 task.tags에 접근할 때 태그 조회 쿼리가 따로 실행됩니다(N+1).
-    tags = relationship("Tag", secondary=task_tags, lazy="selectin")
+    # 기본 lazy 로딩(select). 목록을 만든 뒤 task마다 task.tags에 접근하면
+    # 태그 조회 쿼리가 task 개수만큼 따로 실행됩니다(N+1).
+    tags = relationship("Tag", secondary=task_tags, lazy="select")
